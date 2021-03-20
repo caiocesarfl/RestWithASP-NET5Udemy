@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `book` (
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `author` LONGTEXT NULL,
+  `launch_date` DATETIME NULL,
+  `price` DECIMAL(65,2) NULL,
+  `title` LONGTEXT NULL,
+  PRIMARY KEY (`id`));
