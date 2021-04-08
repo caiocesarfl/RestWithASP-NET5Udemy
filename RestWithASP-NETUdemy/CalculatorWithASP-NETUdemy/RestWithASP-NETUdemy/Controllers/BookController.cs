@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestWithASP_NETUdemy.Business;
+using RestWithASP_NETUdemy.Data.VO;
 using RestWithASP_NETUdemy.Model;
 using System;
 using System.Collections.Generic;
@@ -23,13 +24,19 @@ namespace RestWithASP_NETUdemy.Controllers
             this.bookBusiness = bookBusiness;
         }
 
-        [HttpGet()]
+        [HttpGet]
+        [ProducesResponseType((200), Type = typeof(List<BookVO>))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Get()
         {
             return Ok(bookBusiness.FindAll());
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Get (long id)
         {
             var book = bookBusiness.FindById(id);
@@ -41,7 +48,10 @@ namespace RestWithASP_NETUdemy.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Book book)
+        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult Post([FromBody]BookVO book)
         {
             if (book == null)
                 return NotFound();
@@ -49,7 +59,10 @@ namespace RestWithASP_NETUdemy.Controllers
         }
 
         [HttpPut]
-        public IActionResult Put ([FromBody] Book book)
+        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        public IActionResult Put ([FromBody] BookVO book)
         {
             if (book == null)
                 return NotFound();
@@ -57,6 +70,9 @@ namespace RestWithASP_NETUdemy.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
         public IActionResult Delete (long id)
         {
             var book = bookBusiness.FindById(id);

@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RestWithASP_NETUdemy.Data.VO;
 using RestWithASP_NETUdemy.Model;
 
 namespace RestWithASP_NETUdemy.Business
 {
     public interface IBookBusiness
     {
-        List<Book> FindAll();
+        List<BookVO> FindAll();
 
-        Book FindById(long id);
+        BookVO FindById(long id);
 
-        Book Create(Book book);
+        BookVO Create(BookVO book);
 
-        Book Update(Book book);
+        BookVO Update(BookVO book);
 
         void Delete(long id);
 
