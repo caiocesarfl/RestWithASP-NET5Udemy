@@ -16,7 +16,7 @@ namespace RestWithASP_NETUdemy.Model.Context
         public MySQLContext(DbContextOptions<MySQLContext> options) : base (options) { }
 
         public DbSet<Person> Persons {get; set;}
-        public DbSet<Users> Users { get; set; }
+        public DbSet<User> Users { get; set; }
     
     }
 }
