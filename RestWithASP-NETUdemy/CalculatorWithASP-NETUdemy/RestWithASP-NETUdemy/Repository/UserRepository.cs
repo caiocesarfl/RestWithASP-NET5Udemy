@@ -31,5 +31,31 @@ namespace RestWithASP_NETUdemy.Repository
             Byte[] hashedBytes = algorithm.ComputeHash(inputBytes);
             return BitConverter.ToString(hashedBytes);
         }
+
+        public User RefreshUserInfo(User user)
+        {
+            if (!_context.Users.Any(u => u.Id.Equals(user.Id)))
+            {
+                return null;
+            }
+
+            var result = _context.Users.SingleOrDefault(u => u.Id.Equals(user.Id));
+
+            if (result != null)
+            {
+                try
+                {
+                    _context.Entry(result).CurrentValues.SetValues(user);
+                    _context.SaveChanges();
+                    return result;
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return result;
+        }
     }
 }

@@ -22,6 +22,14 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Rewrite;
+using RestWithASP_NETUdemy.Services;
+using RestWithASP_NETUdemy.Services.Implementations;
+using RestWithASP_NETUdemy.Configurations;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASP_NETUdemy
 {
@@ -44,6 +52,38 @@ namespace RestWithASP_NETUdemy
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var tokenConfigurations = new TokenConfiguration();
+
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
+                    Configuration.GetSection("TokenConfigurations")
+                ).Configure(tokenConfigurations);
+
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(Options => { 
+                Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                Options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(Options =>
+            {
+                Options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = tokenConfigurations.Issuer,
+                    ValidAudience = tokenConfigurations.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+
+                };
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddCors(options => options.AddDefaultPolicy(builder => {
                     builder.AllowAnyOrigin()
@@ -81,7 +121,7 @@ namespace RestWithASP_NETUdemy
             services.AddApiVersioning();
 
             services.AddSwaggerGen(c => { 
-                c.SwaggerDoc("vi",
+                c.SwaggerDoc("v1",
                     new OpenApiInfo 
                     {
                            Title = "REST API's From 0 to Azure with ASP .NET Core 5 and Docker",
@@ -98,6 +138,12 @@ namespace RestWithASP_NETUdemy
             //Dependency Injection
             services.AddScoped<IPersonBusiness, PersonBusinessImplementations>();
             services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+            services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+
+            services.AddTransient<ITokenService, TokenService>();
+
+
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
