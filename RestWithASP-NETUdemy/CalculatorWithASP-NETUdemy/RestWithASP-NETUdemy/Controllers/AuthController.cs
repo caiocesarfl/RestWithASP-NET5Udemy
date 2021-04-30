@@ -12,13 +12,16 @@ namespace RestWithASP_NETUdemy.Controllers
 {
     [ApiVersion("1")]
     [ApiController]
-    [Authorize("Bearer")]
     [Route("api/[controller]/v{version:apiVersion}")]
     
     public class AuthController : ControllerBase
     {
         private ILoginBusiness _loginBusiness;
-    
+
+        public AuthController(ILoginBusiness loginBusiness)
+        {
+            _loginBusiness = loginBusiness;
+        }
 
         [HttpPost]
         [Route("signin")]

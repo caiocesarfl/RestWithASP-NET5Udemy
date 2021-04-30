@@ -168,7 +168,7 @@ namespace RestWithASP_NETUdemy
 
 
             app.UseSwaggerUI(c => { 
-                c.SwaggerEndpoint("/swagger/vi/swagger.json", "REST API's From 0 to Azure with ASP .NET Core 5 and Docker");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API's From 0 to Azure with ASP .NET Core 5 and Docker");
             });
 
             var option = new RewriteOptions();
