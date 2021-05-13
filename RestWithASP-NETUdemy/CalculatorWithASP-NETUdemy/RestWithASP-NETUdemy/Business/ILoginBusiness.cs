@@ -9,5 +9,7 @@ namespace RestWithASP_NETUdemy.Business
     public interface ILoginBusiness
     {
         TokenVO ValidadeCredentials (UserVO user);
+
+        TokenVO ValidadeCredentials(TokenVO token);
     }
 }

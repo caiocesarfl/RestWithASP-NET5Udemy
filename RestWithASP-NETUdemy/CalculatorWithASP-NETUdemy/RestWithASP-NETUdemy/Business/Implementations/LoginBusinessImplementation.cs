@@ -59,6 +59,45 @@ namespace RestWithASP_NETUdemy.Business.Implementations
                 acessToken,
                 refreshToken
             );
+
+            
         }
+        public TokenVO ValidadeCredentials(TokenVO token)
+        {
+            var acessToken = token.AcessToken;
+            var refreshToken = token.RefrashToken;
+
+            var principal = _tokenService.GetPrincipalFromExpiredToken(acessToken);
+
+            var username = principal.Identity.Name;
+
+            var user = _repository.ValidateCredentials(username);
+
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                return null;
+            }
+
+            acessToken = _tokenService.GenerateAcessToken(principal.Claims);
+            refreshToken = _tokenService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+
+            DateTime createDate = DateTime.Now;
+            DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+            _repository.RefreshUserInfo(user);
+
+            return new TokenVO(
+                true,
+                createDate.ToString(DATE_FORMAT),
+                expirationDate.ToString(DATE_FORMAT),
+                acessToken,
+                refreshToken
+            );
+
+        }
+
+
     }
 }

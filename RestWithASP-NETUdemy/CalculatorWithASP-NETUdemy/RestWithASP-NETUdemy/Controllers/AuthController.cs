@@ -41,5 +41,24 @@ namespace RestWithASP_NETUdemy.Controllers
             }
             return Ok(token);
         }
+
+        [HttpPost]
+        [Route("refresh")]
+
+        public IActionResult Refresh([FromBody] TokenVO tokenVO)
+        {
+            if (tokenVO == null)
+            {
+                return BadRequest("Invalid client request");
+            }
+
+            var token = _loginBusiness.ValidadeCredentials(tokenVO);
+
+            if (token == null)
+            {
+                return BadRequest("Invalid client request");
+            }
+            return Ok(token);
+        }
     }
 }
