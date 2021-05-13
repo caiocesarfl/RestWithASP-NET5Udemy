@@ -35,7 +35,7 @@ namespace RestWithASP_NETUdemy
 {
     public class Startup
     {
-        //Teste
+        //Teste Now
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
@@ -47,8 +47,6 @@ namespace RestWithASP_NETUdemy
                 .WriteTo.Console()
                 .CreateLogger();
         }
-
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
