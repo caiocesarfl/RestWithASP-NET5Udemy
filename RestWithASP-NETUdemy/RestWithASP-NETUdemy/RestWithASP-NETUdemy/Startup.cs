@@ -35,6 +35,7 @@ namespace RestWithASP_NETUdemy
 {
     public class Startup
     {
+        //Teste
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
