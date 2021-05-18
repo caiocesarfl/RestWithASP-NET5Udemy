@@ -8,7 +8,11 @@ namespace RestWithASP_NETUdemy.Repository
         User ValidateCredentials (UserVO user);
         User ValidateCredentials (string username);
 
+        bool RevokeToken(string username);
+
         User RefreshUserInfo(User user);
+
+        
 
     }
 }

@@ -30,6 +30,17 @@ namespace RestWithASP_NETUdemy.Repository
             return _context.Users.SingleOrDefault(u => (u.UserName == userName));
         }
 
+        public bool RevokeToken(string userName)
+        {
+           var user = _context.Users.SingleOrDefault(u => (u.UserName == userName));
+           
+           if (user is null)
+                return false;
+           user.RefreshToken = null;
+           _context.SaveChanges();
+           return true;
+        }
+
         public string ComuterHash(string input, SHA256CryptoServiceProvider algorithm)
         {
             Byte[] inputBytes = Encoding.UTF8.GetBytes(input);
@@ -63,6 +74,6 @@ namespace RestWithASP_NETUdemy.Repository
             return result;
         }
 
-      
+        
     }
 }

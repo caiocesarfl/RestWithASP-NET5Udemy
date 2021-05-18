@@ -11,5 +11,7 @@ namespace RestWithASP_NETUdemy.Business
         TokenVO ValidadeCredentials (UserVO user);
 
         TokenVO ValidadeCredentials(TokenVO token);
+
+        bool RevokeToken(string userName);
     }
 }

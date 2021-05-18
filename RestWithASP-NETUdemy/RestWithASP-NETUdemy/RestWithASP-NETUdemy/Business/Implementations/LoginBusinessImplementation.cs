@@ -98,6 +98,9 @@ namespace RestWithASP_NETUdemy.Business.Implementations
 
         }
 
-
+        public bool RevokeToken(string userName)
+        {
+            return _repository.RevokeToken(userName);
+        }
     }
 }
