@@ -95,5 +95,17 @@ namespace RestWithASP_NETUdemy.Controllers
             _personBusiness.Delete(id);
             return NoContent();
         }
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Disable(long id)
+        {
+            var person = _personBusiness.Disable(id);
+            return Ok(person);
+        }
     }
 }

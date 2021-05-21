@@ -14,11 +14,11 @@ namespace RestWithASP_NETUdemy.Business.Implementations
     public class PersonBusinessImplementations : IPersonBusiness
     {
       
-        private readonly IRepository<Person> _repository;
+        private readonly IPersonRepository _repository;
         private readonly PersonConverter _converter;
 
 
-        public PersonBusinessImplementations(IRepository<Person> repository)
+        public PersonBusinessImplementations(IPersonRepository repository)
         {
             _repository = repository;
             _converter = new PersonConverter();
@@ -49,10 +49,17 @@ namespace RestWithASP_NETUdemy.Business.Implementations
             return _converter.Parse(personEntity);
         }
 
+        public PersonVO Disable(long id)
+        {
+            var personEntity = _repository.Disable(id);
+            return _converter.Parse(personEntity);
+        }
+
         public void Delete(long id)
         {
             _repository.Delete(id);
         }
 
+       
     }
 }
