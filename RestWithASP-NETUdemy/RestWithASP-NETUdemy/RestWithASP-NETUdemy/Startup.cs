@@ -110,8 +110,8 @@ namespace RestWithASP_NETUdemy
             .AddXmlSerializerFormatters();
 
             var filterOptions = new HyperMediaFilterOptions();
-            //filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
-            //filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+            filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+            filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
 
 
             services.AddSingleton(filterOptions);

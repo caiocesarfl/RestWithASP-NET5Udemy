@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestWithASP_NETUdemy.Business;
 using RestWithASP_NETUdemy.Data.VO;
+using RestWithASP_NETUdemy.Hypermedia.Filters;
 using RestWithASP_NETUdemy.Model;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [ProducesResponseType((200), Type = typeof(List<BookVO>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get()
         {
             return Ok(bookBusiness.FindAll());
@@ -39,6 +41,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [ProducesResponseType((200), Type = typeof(BookVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get (long id)
         {
             var book = bookBusiness.FindById(id);
@@ -53,6 +56,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [ProducesResponseType((200), Type = typeof(BookVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody]BookVO book)
         {
             if (book == null)
@@ -64,6 +68,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [ProducesResponseType((200), Type = typeof(BookVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put ([FromBody] BookVO book)
         {
             if (book == null)
@@ -75,6 +80,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Delete (long id)
         {
             var book = bookBusiness.FindById(id);
