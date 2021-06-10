@@ -1,5 +1,6 @@
 ﻿using RestWithASP_NETUdemy.Data.Converter.Implementations;
 using RestWithASP_NETUdemy.Data.VO;
+using RestWithASP_NETUdemy.Hypermedia.Utils;
 using RestWithASP_NETUdemy.Model;
 using RestWithASP_NETUdemy.Model.Context;
 using RestWithASP_NETUdemy.Repository;
@@ -13,7 +14,7 @@ namespace RestWithASP_NETUdemy.Business.Implementations
 {
     public class PersonBusinessImplementations : IPersonBusiness
     {
-      
+
         private readonly IPersonRepository _repository;
         private readonly PersonConverter _converter;
 
@@ -29,6 +30,42 @@ namespace RestWithASP_NETUdemy.Business.Implementations
             return _converter.Parse(_repository.FindAll());
         }
 
+        public PagedSearchVO<PersonVO> FindWithPagedSearch(string name, string sortDirection, int pageSize, int page)
+        {
+            var sort = (!string.IsNullOrWhiteSpace(sortDirection)) && !sortDirection.Equals("desc") ? "asc" : "desc";
+            var size = (pageSize < 1) ? 10 : pageSize;
+            var offset = page > 0 ? (page - 1) * size : 0;
+
+            string query = @"select * from person p where 1 = 1 ";
+
+            if (!string.IsNullOrWhiteSpace(name)) { 
+            
+                query = query + $"and p.first_name like '%{name}%' ";
+            }
+            query += $"order by p.first_name {sort} limit {size} offset {offset}";
+
+            string countQuery = @"select count(*) from Person p where 1 = 1 ";
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+
+                countQuery = countQuery + $"and p.first_Name like '%{name}%' ";
+            }
+
+            var persons = _repository.FindWithPagedSearch(query);
+            int totalResults = _repository.GetCount(countQuery);
+
+            return new PagedSearchVO<PersonVO> { 
+                CurrentPage = page,
+                List = _converter.Parse(persons),
+                PageSize = size,
+                SortDirections = sort,
+                TotalResults = totalResults
+
+            };
+        }
+
+
         public PersonVO FindByID(long id)
         {
             return _converter.Parse(_repository.FindById(id));
@@ -36,7 +73,7 @@ namespace RestWithASP_NETUdemy.Business.Implementations
 
         public List<PersonVO> FindByName(string firstName, string lastName)
         {
-            return _converter.Parse(_repository.FindByName(firstName,lastName));
+            return _converter.Parse(_repository.FindByName(firstName, lastName));
         }
 
         public PersonVO Create(PersonVO person)
@@ -45,9 +82,9 @@ namespace RestWithASP_NETUdemy.Business.Implementations
             personEntity = _repository.Create(personEntity);
             return _converter.Parse(personEntity);
         }
-        
 
-         public PersonVO Update(PersonVO person)
+
+        public PersonVO Update(PersonVO person)
         {
             var personEntity = _converter.Parse(person);
             personEntity = _repository.Update(personEntity);
@@ -64,7 +101,6 @@ namespace RestWithASP_NETUdemy.Business.Implementations
         {
             _repository.Delete(id);
         }
-
-        
     }
+       
 }
