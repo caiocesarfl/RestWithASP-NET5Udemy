@@ -5,6 +5,7 @@ using RestWithASP_NETUdemy.Business;
 using RestWithASP_NETUdemy.Data.VO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,6 +48,26 @@ namespace RestWithASP_NETUdemy.Controllers
             List<FileDetailVO> details = await _fileBusiness.SaveFilesToDisk(files);
             return new OkObjectResult (details);
         
+        }
+
+        [HttpGet("downloadFile/{fileName}")]
+        [ProducesResponseType((200), Type = typeof(byte[]))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [Produces("application/octet-stream")]
+
+        public async Task<IActionResult> GetFileAsync(string fileName)
+        {
+            byte [] buffer =  _fileBusiness.GetFile(fileName);
+            if (buffer != null)
+            {
+                HttpContext.Response.ContentType = $"application/{Path.GetExtension(fileName)}";
+                HttpContext.Response.Headers.Add("content-lenght", buffer.Length.ToString());
+                await HttpContext.Response.Body.WriteAsync(buffer, 0, buffer.Length);
+            }
+            return new ContentResult();
+
         }
     }
 }
