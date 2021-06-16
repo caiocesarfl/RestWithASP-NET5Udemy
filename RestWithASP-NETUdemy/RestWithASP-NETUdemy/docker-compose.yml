@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  restwithasp-netudemy:
+    image: ${DOCKER_REGISTRY-}restwithaspnetudemy
+    build:
+      context: .
+      dockerfile: RestWithASP-NETUdemy/Dockerfile
