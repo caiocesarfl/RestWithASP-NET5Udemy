@@ -44,7 +44,7 @@ namespace RestWithASP_NETUdemy.Business.Implementations
             }
             query += $"order by p.first_name {sort} limit {size} offset {offset}";
 
-            string countQuery = @"select count(*) from Person p where 1 = 1 ";
+            string countQuery = @"select count(*) from person p where 1 = 1 ";
 
             if (!string.IsNullOrWhiteSpace(name))
             {
