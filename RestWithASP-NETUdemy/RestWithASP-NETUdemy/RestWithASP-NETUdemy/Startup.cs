@@ -60,7 +60,8 @@ namespace RestWithASP_NETUdemy
 
             services.AddSingleton(tokenConfigurations);
 
-            services.AddAuthentication(Options => { 
+            services.AddAuthentication(Options =>
+            {
                 Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 Options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(Options =>
@@ -74,7 +75,6 @@ namespace RestWithASP_NETUdemy
                     ValidIssuer = tokenConfigurations.Issuer,
                     ValidAudience = tokenConfigurations.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
-
                 };
             });
 
@@ -85,12 +85,13 @@ namespace RestWithASP_NETUdemy
                     .RequireAuthenticatedUser().Build());
             });
 
-            services.AddCors(options => options.AddDefaultPolicy(builder => {
-                    builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
             }));
-            
+
             services.AddControllers();
 
             var connection = Configuration["MySQLConnection:MySQLConnectionString"];
@@ -98,7 +99,7 @@ namespace RestWithASP_NETUdemy
 
             //if (Environment.IsDevelopment())
             //{
-               // MigrateDatabase(connection);
+                //MigrateDatabase(connection);
             //}
 
             services.AddMvc(options =>
@@ -120,18 +121,19 @@ namespace RestWithASP_NETUdemy
             //Versioning API
             services.AddApiVersioning();
 
-            services.AddSwaggerGen(c => { 
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1",
-                    new OpenApiInfo 
+                    new OpenApiInfo
                     {
-                           Title = "REST API's From 0 to Azure with ASP .NET Core 5 and Docker",
-                           Version = "v1",
-                           Description = "API RESTfull developed in curse REST API's From 0 to Azure with ASP .NET Core 5 and Docker",
-                           Contact = new OpenApiContact
-                           {
-                               Name = "Caio Lara",
-                               Url =  new Uri("https://github.com/caiocesarfl")
-                           }
+                        Title = "REST API's From 0 to Azure with ASP .NET Core 5 and Docker",
+                        Version = "v1",
+                        Description = "API RESTfull developed in curse REST API's From 0 to Azure with ASP .NET Core 5 and Docker",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Caio Lara",
+                            Url = new Uri("https://github.com/caiocesarfl")
+                        }
                     });
             });
 
@@ -171,12 +173,13 @@ namespace RestWithASP_NETUdemy
 
 
 
-            app.UseSwaggerUI(c => { 
+            app.UseSwaggerUI(c =>
+            {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API's From 0 to Azure with ASP .NET Core 5 and Docker");
             });
 
             var option = new RewriteOptions();
-            option.AddRedirect("^$","swagger");
+            option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
 
             app.UseAuthorization();
