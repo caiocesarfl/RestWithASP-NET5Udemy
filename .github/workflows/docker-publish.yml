@@ -5,8 +5,10 @@ name: Continuos Integration with Github Actions
 # separate terms of service, privacy policy, and support
 # documentation.
 
-on: [push]
- 
+on:
+  push:
+    branches: [ Rest_Verbs ]
+    
 jobs:
   build:
 
