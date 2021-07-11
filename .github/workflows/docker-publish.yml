@@ -7,7 +7,7 @@ name: Continuos Integration with Github Actions
 
 on:
   push:
-    branches: [ Rest_Verbs ]
+    branches: [ main ]
     
 jobs:
   build:
