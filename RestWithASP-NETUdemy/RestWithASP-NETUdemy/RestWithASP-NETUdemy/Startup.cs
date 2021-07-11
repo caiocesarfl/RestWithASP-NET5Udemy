@@ -171,11 +171,11 @@ namespace RestWithASP_NETUdemy
 
             app.UseSwagger();
 
-
+           
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API's From 0 to Azure with ASP .NET Core 5 and Docker - Foo Bar");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "REST API's From 0 to Azure with ASP .NET Core 5 and Docker - Foo Bar22");
             });
 
             var option = new RewriteOptions();
