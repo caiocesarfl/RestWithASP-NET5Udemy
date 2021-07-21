@@ -12,9 +12,9 @@ namespace RestWithASP_NETUdemy.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly MySQLContext _context;
+        private readonly PostgreeSQLContext _context;
 
-        public UserRepository(MySQLContext context)
+        public UserRepository(PostgreeSQLContext context)
         {
             _context = context;
         }

@@ -94,13 +94,13 @@ namespace RestWithASP_NETUdemy
 
             services.AddControllers();
 
-            var connection = Configuration["MySQLConnection:MySQLConnectionString"];
-            services.AddDbContext<MySQLContext>(options => options.UseMySql(connection));
+            var connection = Configuration["PostgreeConnection:PostgreeConnectionString"];
+            services.AddDbContext<PostgreeSQLContext>(options => options.UseNpgsql(connection));
 
-            //if (Environment.IsDevelopment())
-            //{
-                //MigrateDatabase(connection);
-            //}
+            if (Environment.IsDevelopment())
+            {
+                MigrateDatabase(connection);
+            }
 
             services.AddMvc(options =>
             {
@@ -194,7 +194,7 @@ namespace RestWithASP_NETUdemy
         {
             try
             {
-                var evolveConnection = new MySql.Data.MySqlClient.MySqlConnection(connection);
+                var evolveConnection = new Npgsql.NpgsqlConnection(connection);
                 var evolve = new Evolve.Evolve(evolveConnection, msg => Log.Information(msg))
                 {
                     Locations = new List<string> { "db/migrations", "db/dataset" },

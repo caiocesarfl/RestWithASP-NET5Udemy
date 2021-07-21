@@ -10,13 +10,13 @@ namespace RestWithASP_NETUdemy.Repository.Generic
 {
     public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
-        protected MySQLContext _context;
+        protected PostgreeSQLContext _context;
 
         private DbSet<T> dataset;
 
 
 
-        public GenericRepository(MySQLContext context)
+        public GenericRepository(PostgreeSQLContext context)
         {
             _context = context;
             dataset = _context.Set<T>();
