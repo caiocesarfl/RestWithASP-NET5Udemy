@@ -140,7 +140,36 @@ namespace RestWithASPNETUdemy
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         }
 
-        private void ExecuteMigrations(string connectionString)
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddConsole(_configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            //Enable Swagger
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
+            //Starting our API in Swagger page
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+
+            app.UseAuthentication();
+            //Adding map routing
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=Values}/{id?}");
+            });
+
+        }
+    }
+
+    private void ExecuteMigrations(string connectionString)
         {
             if (_environment.IsDevelopment())
             {
@@ -165,32 +194,5 @@ namespace RestWithASPNETUdemy
             }
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole(_configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            //Enable Swagger
-            app.UseSwagger();
-
-            app.UseSwaggerUI(c => {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
-
-            //Starting our API in Swagger page
-            var option = new RewriteOptions();
-            option.AddRedirect("^$", "swagger");
-            app.UseRewriter(option);
-
-            //Adding map routing
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "DefaultApi",
-                    template: "{controller=Values}/{id?}");
-            });
-
-        }
-    }
+     
 }

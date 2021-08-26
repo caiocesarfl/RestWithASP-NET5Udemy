@@ -1,22 +1,17 @@
-﻿using System;
+﻿using RestWithASP_NETUdemy.Data.VO;
+using RestWithASP_NETUdemy.Hypermedia.Utils;
 using System.Collections.Generic;
-using RestWithASP_NETUdemy.Data.VO;
-using RestWithASP_NETUdemy.Model;
 
 namespace RestWithASP_NETUdemy.Business
 {
     public interface IBookBusiness
     {
-        List<BookVO> FindAll();
-
-        BookVO FindById(long id);
-
         BookVO Create(BookVO book);
-
+        BookVO FindByID(long id);
+        List<BookVO> FindAll();
+        PagedSearchVO<BookVO> FindWithPagedSearch(
+            string title, string sortDirection, int pageSize, int page);
         BookVO Update(BookVO book);
-
         void Delete(long id);
-
-        
     }
 }

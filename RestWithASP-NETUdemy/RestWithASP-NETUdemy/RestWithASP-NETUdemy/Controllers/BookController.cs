@@ -27,14 +27,19 @@ namespace RestWithASP_NETUdemy.Controllers
             this.bookBusiness = bookBusiness;
         }
 
-        [HttpGet]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
         [ProducesResponseType((200), Type = typeof(List<BookVO>))]
+        [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [TypeFilter(typeof(HyperMediaFilter))]
-        public IActionResult Get()
+        public IActionResult Get(
+             [FromQuery] string title,
+             string sortDirection,
+             int pageSize,
+             int page)
         {
-            return Ok(bookBusiness.FindAll());
+            return Ok(bookBusiness.FindWithPagedSearch(title, sortDirection, pageSize, page));
         }
 
         [HttpGet("{id}")]
@@ -44,7 +49,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Get (long id)
         {
-            var book = bookBusiness.FindById(id);
+            var book = bookBusiness.FindByID(id);
             if (book == null)
             {
                 return NotFound();
@@ -83,7 +88,7 @@ namespace RestWithASP_NETUdemy.Controllers
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Delete (long id)
         {
-            var book = bookBusiness.FindById(id);
+            var book = bookBusiness.FindByID(id);
             if (book == null)
             {
                 return NotFound();
