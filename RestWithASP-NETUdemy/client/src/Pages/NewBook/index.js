@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, useHistory} from 'react-router-dom'
-import {FiArrowLeft} from 'react-icons/fi'
+import {FiAlertOctagon, FiArrowLeft} from 'react-icons/fi'
 import api from '../../services/api'
 
 import './styles.css';
@@ -27,15 +27,18 @@ export default function NewBook () {
             price
         }
 
+        try { 
         const acessToken = localStorage.getItem('acessToken');
-        console.log(data);
             const response = await api.post('api/Book/v1', data, {
                 headers : {
                     'Content-Type' : 'application/json',
                     'Authorization' : `Bearer ${acessToken}`
                 }
             });
-           //history.push('/books');
+        } catch (erro) {
+            alert("Insert book failure" + erro);
+        }
+        history.push('/books');
     }   
 
     return (
